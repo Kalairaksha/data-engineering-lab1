@@ -16,27 +16,27 @@ def generate_sales_data():
 
 # 2. Data Transformation (Transform)
 def transform_data(df):
-    # Calculate total revenue per order
     df['total_amount'] = df['price'] * df['quantity']
-    
-    # Capitalize customer names
     df['customer'] = df['customer'].str.upper()
     return df
 
-# 3. Load into Database (Load)
+# 3. Load into Database & Filter (Load & Query)
 def load_to_database(df):
-    # Create SQLite database connection
     conn = sqlite3.connect('sales_warehouse.db')
-    
-    # Save data to SQL table
     df.to_sql('orders', conn, if_exists='replace', index=False)
     
-    print("Data ETL Pipeline executed successfully!")
+    print("Data ETL Pipeline executed successfully!\n")
     
-    # Verify data from DB
+    # All Data Print
     result = pd.read_sql_query("SELECT * FROM orders", conn)
-    print("\n--- Processed Data in Database ---")
+    print("--- All Processed Data ---")
     print(result)
+    
+    # SPECIFIC DATA FILTER (Example: KUMAR data only)
+    query = "SELECT * FROM orders WHERE customer = 'KUMAR'"
+    kumar_data = pd.read_sql_query(query, conn)
+    print("\n--- Specific Data (KUMAR Only) ---")
+    print(kumar_data)
     
     conn.close()
 
@@ -45,5 +45,3 @@ if __name__ == "__main__":
     raw_df = generate_sales_data()
     transformed_df = transform_data(raw_df)
     load_to_database(transformed_df)
-# Save output as CSV so GitHub can display it
-transformed_df.to_csv('processed_sales.csv', index=False)
