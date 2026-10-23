@@ -45,3 +45,5 @@ if __name__ == "__main__":
     raw_df = generate_sales_data()
     transformed_df = transform_data(raw_df)
     load_to_database(transformed_df)
+# Save output as CSV so GitHub can display it
+transformed_df.to_csv('processed_sales.csv', index=False)
