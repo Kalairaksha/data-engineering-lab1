@@ -1,4 +1,3 @@
-# data-engineering-lab1
 # Real-Time E-Commerce Data Pipeline (ETL)
 
 ## 📌 Project Overview
